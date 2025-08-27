@@ -1,0 +1,71 @@
+<mxfile host="app.diagrams.net" modified="2025-08-27T12:30:00.000Z" agent="Mozilla/5.0" etag="your-etag-here" version="22.1.2" type="atlas">
+  <diagram id="class_diagram_medical_appointment_system" name="Class Diagram">
+    <mxGraphModel dx="1291" dy="728" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Paciente Class -->
+        <mxCell id="PacienteClass" value="&lt;u&gt;Paciente&lt;/u&gt;&lt;hr&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;+ id: int &lt;br&gt;+ nome: str&lt;br&gt;+ cpf: str &lt;br&gt;+ data_nascimento: date&lt;br&gt;+ telefone: str&lt;br&gt;+ email: str&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="160" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Medico Class -->
+        <mxCell id="MedicoClass" value="&lt;u&gt;Medico&lt;/u&gt;&lt;hr&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;+ id: int&lt;br&gt;+ nome: str&lt;br&gt;+ crm: str&lt;br&gt;+ especialidade: str&lt;br&gt;+ telefone: str&lt;br&gt;+ email: str&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="160" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Consulta Class -->
+        <mxCell id="ConsultaClass" value="&lt;u&gt;Consulta&lt;/u&gt;&lt;hr&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;+ id: int&lt;br&gt;+ data_hora: datetime&lt;br&gt;+ status: str&lt;br&gt;+ medico_id: int (FK)&lt;br&gt;+ paciente_id: int (FK)&lt;br&gt;+ observacoes: str&lt;/font&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="250" y="350" width="160" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <!-- Medico to Consulta (1 para 0..*) -->
+        <mxCell id="rel_Medico_Consulta" value="" style="endArrow=none;html=1;fontFamily=Helvetica;fontSize=12;fontColor=none;rounded=0;edgeStyle=entityRelationEdge;startArrow=ERone;endArrow=ERzeroToMany;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="MedicoClass" target="ConsultaClass">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="480" y="250" as="sourcePoint"/>
+                <mxPoint x="330" y="350" as="targetPoint"/>
+                <Array as="points">
+                    <mxPoint x="480" y="300" />
+                </Array>
+                <mxPoint x="430" y="270" as="offset"/>
+            </mxGeometry>
+            <mxCell id="rel_Medico_Consulta_label_start" value="1" style="resizable=0;html=1;align=left;verticalAlign=bottom;fontSize=10;" vertex="1" connectable="0" parent="rel_Medico_Consulta">
+              <mxGeometry x="1" relative="1" as="geometry">
+                <mxPoint x="-7" y="-22" as="offset" />
+              </mxGeometry>
+            </mxCell>
+            <mxCell id="rel_Medico_Consulta_label_end" value="0..*" style="resizable=0;html=1;align=right;verticalAlign=bottom;fontSize=10;" vertex="1" connectable="0" parent="rel_Medico_Consulta">
+              <mxGeometry x="1" relative="1" as="geometry">
+                <mxPoint x="20" y="10" as="offset" />
+              </mxGeometry>
+            </mxCell>
+        </mxCell>
+
+        <!-- Paciente to Consulta (1 para 0..*) -->
+        <mxCell id="rel_Paciente_Consulta" value="" style="endArrow=none;html=1;fontFamily=Helvetica;fontSize=12;fontColor=none;rounded=0;edgeStyle=entityRelationEdge;startArrow=ERone;endArrow=ERzeroToMany;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="PacienteClass" target="ConsultaClass">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="180" y="250" as="sourcePoint"/>
+                <mxPoint x="330" y="350" as="targetPoint"/>
+                <Array as="points">
+                    <mxPoint x="180" y="300" />
+                </Array>
+                <mxPoint x="230" y="270" as="offset"/>
+            </mxGeometry>
+            <mxCell id="rel_Paciente_Consulta_label_start" value="1" style="resizable=0;html=1;align=left;verticalAlign=bottom;fontSize=10;" vertex="1" connectable="0" parent="rel_Paciente_Consulta">
+              <mxGeometry x="1" relative="1" as="geometry">
+                <mxPoint x="-7" y="-22" as="offset" />
+              </mxGeometry>
+            </mxCell>
+            <mxCell id="rel_Paciente_Consulta_label_end" value="0..*" style="resizable=0;html=1;align=right;verticalAlign=bottom;fontSize=10;" vertex="1" connectable="0" parent="rel_Paciente_Consulta">
+              <mxGeometry x="1" relative="1" as="geometry">
+                <mxPoint x="20" y="10" as="offset" />
+              </mxGeometry>
+            </mxCell>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
