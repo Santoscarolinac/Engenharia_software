@@ -1,0 +1,250 @@
+Documento de Especificação de Requisitos de Software (ERS)
+Título: Sistema de Agendamento de Consultas Médicas
+Versão: 1.0
+Data: Setembro de 2025
+1. Introdução
+1.1 Objetivo
+O objetivo deste documento é detalhar os requisitos funcionais e não funcionais para o desenvolvimento de um Sistema de Agendamento de Consultas Médicas. Este sistema permitirá o cadastro de médicos e pacientes, a marcação e o cancelamento de consultas, fornecendo uma aplicação web leve e funcional.
+1.2 Escopo do Sistema
+O Sistema de Agendamento de Consultas Médicas é uma aplicação web destinada a otimizar o processo de gestão de agendamentos. Suas funcionalidades principais incluem a administração de informações de médicos e pacientes e o gerenciamento de suas respectivas consultas. O entregável final será uma aplicação web com telas para cadastro de médicos, cadastro de pacientes e gerenciamento (cadastro e exclusão) de consultas.
+1.3 Pessoas Envolvidas
+Stakeholders: Pacientes, Médicos (Usuários Finais)
+Equipe de Desenvolvimento: Aluno (Você), AI Assistant (Eu)
+Orientador: Professor da Disciplina "AI DRIVEN SOFTWARE ENGINEERING"
+1.4 Definições, Acrônimos e Abreviações
+API: Application Programming Interface
+ERS: Especificação de Requisitos de Software
+FastAPI: Framework web para construir APIs com Python
+Frontend: Parte da aplicação que interage diretamente com o usuário
+Backend: Parte da aplicação responsável pela lógica de negócios e persistência de dados
+HTML/CSS: Linguagens de marcação e estilo para construção de páginas web
+Jinja2 (Jinja): Motor de templates para Python, usado para gerar HTML dinamicamente
+Markdown: Linguagem de marcação leve para criar documentos formatados
+SQLite: Banco de dados relacional leve e embutido
+UML: Unified Modeling Language
+UC: Caso de Uso
+QA: Quality Assurance (Garantia de Qualidade)
+1.5 Referências
+Escopo do Projeto: "Sistema de Agendamento de Consultas Médicas"
+Diagrama de Caso de Uso UML (Anexado anteriormente)
+Diagrama de Classes (Gerado anteriormente, para referência de estrutura de dados)
+2. Descrição Geral
+2.1 Perspectiva do Produto
+O Sistema de Agendamento de Consultas Médicas será uma aplicação web autônoma e leve. Ele não será parte de um sistema maior existente, mas poderá, no futuro, ser integrado a outros serviços (e.g., sistemas de prontuários eletrônicos) através de sua API bem definida, se necessário.
+2.2 Funções do Produto (Resumo)
+O sistema fornecerá as seguintes funções principais:
+Cadastro e gerenciamento de informações de médicos.
+Cadastro e gerenciamento de informações de pacientes.
+Agendamento de novas consultas para pacientes com médicos disponíveis.
+Cancelamento ou reagendamento de consultas existentes.
+Visualização da agenda de consultas para médicos e pacientes.
+2.3 Características dos Usuários
+Médico:
+Conhecimento básico em navegação web.
+Necessidade de visualizar sua própria agenda de consultas.
+Possibilidade de gerenciar (agendar, cancelar, reagendar) consultas, principalmente para seus pacientes ou em seu nome.
+Possibilidade de visualizar e potencialmente gerenciar pacientes.
+Paciente:
+Conhecimento básico em navegação web.
+Necessidade de visualizar suas próprias consultas.
+Capacidade de agendar, cancelar e reagendar suas consultas.
+Capacidade de manter suas informações de cadastro atualizadas.
+(Implícito) Administrador/Secretária: Embora não explicitamente no diagrama de caso de uso como ator, a função "Cadastrar Pacientes" para um Médico e a gestão geral (inclusive cadastro de médicos) implica a necessidade de um perfil com mais privilégios ou que tais ações possam ser realizadas por um médico/secretário/administrador para pacientes. Para a primeira iteração, consideraremos que "Médico" ou "Secretário" pode desempenhar essas funções administrativas. Se um papel "Administrador" ou "Secretário" separado for necessário, ele será adicionado em iterações futuras.
+2.4 Restrições
+Tecnológicas:
+Backend: Exclusivamente FastAPI (Python).
+Banco de Dados: Exclusivamente SQLite.
+Frontend: Exclusivamente HTML/CSS/Jinja (renderizado via FastAPI).
+Modelagem: Utilização de draw.io para diagramas.
+Documentação: Markdown no GitHub.
+Operacionais:
+A aplicação deve ser leve e de fácil implantação.
+Foco em funcionalidade básica e clara para um MVP (Minimum Viable Product).
+Ambientais: Não aplicável neste nível de detalhe.
+Prazos: Conforme cronograma do curso universitário.
+2.5 Premissas e Dependências
+Premissas:
+Os usuários (Médicos e Pacientes) terão acesso à internet e a um navegador web compatível.
+O foco inicial não inclui autenticação/autorização complexa, mas será considerado para futuras extensões. Por enquanto, assumiremos acesso simples ou que um perfil com permissões gerencie o cadastro de pacientes/médicos.
+Horários de funcionamento de clínicas ou agendas de médicos são flexíveis o suficiente para permitir agendamento simples sem regras complexas de slots de tempo fixos por enquanto.
+Dependências:
+Disponibilidade e aprendizado das tecnologias especificadas (FastAPI, SQLite, Jinja).
+Ferramenta draw.io para modelagem.
+GitHub para versionamento e documentação.
+3. Requisitos Funcionais
+Esta seção detalha as funcionalidades que o sistema deve oferecer. Cada requisito é descrito com identificador, descrição, ator(es), pré-condição, pós-condição, fluxo principal e fluxos alternativos, quando aplicável.
+3.1 RF-001: Cadastrar Pacientes
+Descrição: O sistema deve permitir que um usuário com permissão (e.g., Médico, ou um perfil administrativo implícito) cadastre novos pacientes, inserindo suas informações básicas.
+Prioridade: Alta
+Ator(es): Médico (ou Administrador/Secretária)
+Pré-condição: O usuário deve estar logado e ter permissão para cadastrar pacientes.
+Pós-condição: Um novo paciente é registrado no sistema com suas informações, e um identificador único é atribuído.
+Fluxo Principal:
+O Ator acessa a tela de cadastro de pacientes.
+O Ator preenche o formulário com nome, cpf, data_nascimento, telefone e email.
+O Ator clica em "Salvar".
+O sistema valida os dados.
+O sistema persiste as informações do novo paciente no banco de dados.
+O sistema exibe uma mensagem de sucesso.
+Fluxos Alternativos:
+A1: Dados Inválidos: Se os dados estiverem inválidos (e.g., CPF duplicado, campos obrigatórios vazios), o sistema exibe mensagens de erro e mantém o formulário preenchido para correção.
+A2: Falha na Persistência: Caso haja um erro no banco de dados, o sistema informa o usuário e tenta reverter a operação.
+3.2 RF-002: Cadastrar Médicos
+Descrição: O sistema deve permitir que um usuário com permissão (e.g., Administrador/Secretária, ou um Médico com privilégio) cadastre novos médicos, inserindo suas informações básicas.
+Prioridade: Alta
+Ator(es): Administrador/Secretária (ou Médico com privilégio)
+Pré-condição: O usuário deve estar logado e ter permissão para cadastrar médicos.
+Pós-condição: Um novo médico é registrado no sistema com suas informações, e um identificador único é atribuído.
+Fluxo Principal:
+O Ator acessa a tela de cadastro de médicos.
+O Ator preenche o formulário com nome, crm, especialidade, telefone e email.
+O Ator clica em "Salvar".
+O sistema valida os dados.
+O sistema persiste as informações do novo médico no banco de dados.
+O sistema exibe uma mensagem de sucesso.
+Fluxos Alternativos:
+A1: Dados Inválidos: Se os dados estiverem inválidos (e.g., CRM duplicado, campos obrigatórios vazios), o sistema exibe mensagens de erro e mantém o formulário preenchido para correção.
+A2: Falha na Persistência: Caso haja um erro no banco de dados, o sistema informa o usuário e tenta reverter a operação.
+3.3 RF-003: Agendar Consulta
+Descrição: O sistema deve permitir que um Paciente ou um Médico agende uma nova consulta, selecionando um médico, paciente e um horário disponível.
+Prioridade: Alta
+Ator(es): Paciente, Médico
+Pré-condição: Paciente e Médico já cadastrados no sistema. Horário disponível na agenda do médico.
+Pós-condição: Uma nova consulta é registrada no sistema com status "Agendada".
+Fluxo Principal:
+O Ator acessa a funcionalidade de agendar consulta.
+O Ator seleciona um médico (se for um paciente, ou para si se for um médico).
+O Ator seleciona um paciente (se for um médico agendando para outro).
+O sistema apresenta a agenda do médico selecionado com horários disponíveis.
+O Ator seleciona uma data_hora disponível.
+O Ator pode adicionar observacoes (opcional).
+O Ator confirma o agendamento.
+O sistema valida se o horário ainda está disponível e não há conflitos.
+O sistema registra a nova consulta no banco de dados.
+O sistema exibe uma mensagem de sucesso e atualiza as agendas.
+Fluxos Alternativos:
+A1: Horário Indisponível: Se o horário selecionado não estiver mais disponível, o sistema informa e pede para selecionar outro horário.
+A2: Dados Incompletos: Se campos obrigatórios não forem preenchidos, o sistema informa.
+A3: Conflito de Agendamento: Se houver uma tentativa de agendar duas consultas para o mesmo médico no mesmo horário, o sistema impede e informa o conflito.
+3.4 RF-004: Cancelar Consulta
+Descrição: O sistema deve permitir que um Paciente (suas próprias consultas) ou um Médico (qualquer consulta em sua agenda) cancele uma consulta previamente agendada.
+Prioridade: Alta
+Ator(es): Paciente, Médico
+Pré-condição: A consulta existe e está com status "Agendada".
+Pós-condição: A consulta tem seu status alterado para "Cancelada" e o horário fica disponível.
+Fluxo Principal:
+O Ator visualiza as consultas (suas ou da agenda do médico).
+O Ator seleciona a consulta a ser cancelada.
+O Ator confirma o cancelamento.
+O sistema altera o status da consulta para "Cancelada" no banco de dados.
+O sistema exibe uma mensagem de sucesso e remove a consulta das listas de "Ativas".
+Fluxos Alternativos:
+A1: Consulta Não Encontrada: Se a consulta não existir ou não puder ser cancelada (e.g., já realizada), o sistema informa.
+A2: Prazo para Cancelamento: (Requisito futuro) Se houver um prazo mínimo para cancelamento, o sistema impede o cancelamento fora do prazo.
+3.5 RF-005: Reagendar Consulta
+Descrição: O sistema deve permitir que um Paciente ou um Médico reagende uma consulta previamente agendada para um novo horário.
+Prioridade: Média
+Ator(es): Paciente, Médico
+Pré-condição: A consulta existe e está com status "Agendada". O novo horário desejado está disponível.
+Pós-condição: A consulta tem sua data/hora alterada para o novo agendamento, mantendo o mesmo status "Agendada".
+Fluxo Principal:
+O Ator visualiza as consultas.
+O Ator seleciona a consulta a ser reagendada.
+O sistema apresenta a opção de reagendamento.
+O Ator seleciona um novo médico (opcional, dependendo da permissão) e/ou um novo data_hora disponível.
+O Ator confirma o reagendamento.
+O sistema valida a disponibilidade do novo horário.
+O sistema atualiza a data_hora da consulta no banco de dados.
+O sistema exibe uma mensagem de sucesso e atualiza as agendas.
+Fluxos Alternativos:
+A1: Novo Horário Indisponível: Se o novo horário estiver ocupado, o sistema informa.
+A2: Reagendamento não permitido: Se a consulta não puder ser reagendada (e.g., prazo excedido, status inapropriado), o sistema informa.
+3.6 RF-006: Visualizar Agenda Médica
+Descrição: O sistema deve permitir que um Médico visualize todas as suas consultas agendadas, por data ou período.
+Prioridade: Alta
+Ator(es): Médico
+Pré-condição: O Médico deve estar cadastrado.
+Pós-condição: O Médico visualiza uma lista de suas consultas.
+Fluxo Principal:
+O Médico acessa a funcionalidade "Visualizar Agenda Médica".
+O sistema exibe a lista de todas as consultas agendadas para aquele médico, talvez com filtro por dia/semana/mês.
+Para cada consulta, são exibidos detalhes como data_hora, paciente, status, observacoes.
+Fluxos Alternativos:
+A1: Nenhuma Consulta: Se não houver consultas agendadas, o sistema informa.
+3.7 RF-007: Visualizar Consultas do Paciente
+Descrição: O sistema deve permitir que um Paciente visualize suas próprias consultas agendadas.
+Prioridade: Média
+Ator(es): Paciente
+Pré-condição: O Paciente deve estar cadastrado.
+Pós-condição: O Paciente visualiza uma lista de suas consultas.
+Fluxo Principal:
+O Paciente acessa a funcionalidade "Minhas Consultas" (ou similar).
+O sistema exibe a lista de todas as consultas agendadas para aquele paciente.
+Para cada consulta, são exibidos detalhes como data_hora, médico, status, observacoes.
+Fluxos Alternativos:
+A1: Nenhuma Consulta: Se não houver consultas agendadas, o sistema informa.
+3.8 RF-008: Excluir Consulta (Definitiva)
+Descrição: O sistema deve permitir que um usuário com permissão administrativa (e.g., Administrador/Secretária, ou um Médico com privilégio) remova permanentemente um registro de consulta do sistema. Diferente de "Cancelar", esta é uma remoção total.
+Prioridade: Baixa (para o MVP, cancelar já resolve, mas o escopo menciona "exclusão de consultas")
+Ator(es): Administrador/Secretária (ou Médico com privilégio)
+Pré-condição: A consulta existe no sistema e o ator tem permissão para excluir.
+Pós-condição: A consulta é removida permanentemente do banco de dados.
+Fluxo Principal:
+O Ator acessa a lista de consultas.
+O Ator seleciona uma consulta e escolhe a opção "Excluir Definitivamente".
+O sistema solicita uma confirmação da exclusão (aviso de ação irreversível).
+O Ator confirma.
+O sistema remove o registro da consulta do banco de dados.
+O sistema exibe uma mensagem de sucesso.
+Fluxos Alternativos:
+A1: Não Confirma Exclusão: O Ator decide não excluir, e a operação é abortada.
+A2: Consulta Não Encontrada: O sistema informa se a consulta não puder ser encontrada.
+A3: Falha na Exclusão: O sistema informa se houver um erro na remoção do registro.
+4. Requisitos Não Funcionais
+Esta seção detalha os atributos de qualidade que o sistema deve possuir.
+4.1 Requisitos de Desempenho
+RNF-DP-001: O tempo de resposta para operações de cadastro, agendamento, cancelamento e visualização de agenda deve ser inferior a 2 segundos em condições normais de uso (para até 100 consultas/dia e 50 médicos/500 pacientes).
+RNF-DP-002: O sistema deve suportar pelo menos 5 usuários concorrentes realizando operações simultaneamente sem degradação perceptível de desempenho.
+4.2 Requisitos de Segurança
+RNF-SG-001: O sistema deve proteger as informações confidenciais de pacientes e médicos contra acesso não autorizado.
+RNF-SG-002: Todas as transações (cadastro, agendamento, cancelamento) devem ser registradas em logs para fins de auditoria (implica que o backend deverá ter um mecanismo de logging).
+RNF-SG-003: O sistema deve garantir a integridade dos dados, prevenindo corrupção ou perda.
+RNF-SG-004: O acesso a funcionalidades sensíveis (ex: exclusão de dados) deve ser restrito a perfis com permissões específicas.
+4.3 Requisitos de Usabilidade
+RNF-US-001: A interface do usuário deve ser intuitiva e fácil de usar, mesmo para usuários com conhecimento básico de tecnologia.
+RNF-US-002: O sistema deve fornecer feedback claro e imediato para todas as ações do usuário (e.g., mensagens de sucesso, erro ou carregamento).
+RNF-US-003: Os formulários devem ter validação de entrada de dados para guiar o usuário no preenchimento correto.
+RNF-US-004: O design do frontend deve ser responsivo, adaptando-se a diferentes tamanhos de tela (desktop, tablet, mobile) (Implica no uso de CSS adequado).
+4.4 Requisitos de Confiabilidade
+RNF-CF-001: O sistema deve ser robusto a falhas, com um tempo médio entre falhas (MTBF) mínimo de 99,9% durante o horário de funcionamento.
+RNF-CF-002: Em caso de erro, o sistema deve registrar informações detalhadas do erro (logs) e, quando possível, recuperar-se gracefully ou apresentar uma mensagem útil ao usuário.
+4.5 Requisitos de Manutenibilidade
+RNF-MT-001: O código-fonte do sistema deve ser modular, bem documentado e seguir padrões de codificação Python (PEP 8) para facilitar a manutenção e futuras expansões.
+RNF-MT-002: A arquitetura do sistema (backend FastAPI, frontend Jinja, BD SQLite) deve permitir que cada componente seja atualizado ou substituído com mínimo impacto nos demais.
+4.6 Requisitos de Portabilidade
+RNF-PT-001: O backend baseado em FastAPI/Python deve ser executável em ambientes de sistemas operacionais comuns (Linux, Windows, macOS).
+RNF-PT-002: O banco de dados SQLite deve ser portátil e o arquivo de banco de dados (.db) deve ser facilmente movível entre ambientes.
+4.7 Requisitos Operacionais/Tecnológicos
+RNF-OP-001: O sistema deve ser compatível com os principais navegadores web modernos (Chrome, Firefox, Edge, Safari).
+RNF-OP-002: A API do FastAPI deve seguir os princípios RESTful para comunicação eficiente com o frontend.
+RNF-OP-003: A base de dados SQLite deve ser acessada através de uma camada de abstração (ORM como SQLAlchemy ou banco de dados puro com sqlite3 do Python) para melhor organização e teste.
+5. Requisitos de Interface
+5.1 Interfaces de Usuário (Frontend)
+RNF-IU-001: As interfaces (telas) de cadastro de médicos, pacientes e agendamento/exclusão de consultas devem ser desenvolvidas utilizando HTML5, CSS3 e Jinja2.
+RNF-IU-002: Deve haver uma tela principal que sirva como um "dashboard" simples para visualizar as próximas consultas (para médicos) ou suas próprias consultas (para pacientes).
+RNF-IU-003: O design visual das telas deve ser consistente em todo o sistema, utilizando um esquema de cores e tipografia unificado.
+5.2 Interfaces de Software
+RNF-IS-001: O backend FastAPI deve expor endpoints RESTful para todas as operações de CRUD (Create, Read, Update, Delete) nas entidades de Médico, Paciente e Consulta.
+Ex: /medicos (GET, POST), /medicos/{id} (GET, PUT, DELETE), /pacientes, /consultas, etc.
+RNF-IS-002: As respostas da API devem estar no formato JSON.
+RNF-IS-003: A interação com o banco de dados SQLite será através de uma camada de persistência no backend.
+5.3 Interfaces de Comunicação
+RNF-IC-001: Toda a comunicação entre o frontend (navegador) e o backend (FastAPI) será realizada via protocolo HTTP/HTTPS (para segurança, HTTPS é desejável em produção).
+6. Outros Requisitos
+RNF-OU-001 (Documentação): Todo o código-fonte deve ser comentado, e a documentação técnica (incluindo diagramas de arquitetura, modelagem e este ERS) deve ser mantida em Markdown no GitHub.
+Este documento ERS fornece uma base robusta para o seu projeto. Ele cobre o essencial para a primeira iteração, focando nas funcionalidades primárias e nas restrições tecnológicas.
+Agora você tem um guia claro para:
+Refinar seus diagramas no draw.io com base nos detalhes dos requisitos funcionais e entidades.
+Iniciar o desenvolvimento sabendo exatamente o que construir.
+Planejar seus testes com base nos cenários de sucesso e falha descritos.
+Qual será a próxima etapa? Podemos começar a esboçar a estrutura do banco de dados (esquema SQLite) ou discutir a arquitetura inicial do código FastAPI, com base nas classes e requisitos.
